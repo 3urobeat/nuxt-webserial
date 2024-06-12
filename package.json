@@ -1,0 +1,53 @@
+{
+  "name": "platformio-web-flasher",
+  "version": "0.1.0",
+  "description": "Wield the power of PlatformIO to flash any microcontroller from your browser",
+  "author": "3urobeat",
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/3urobeat",
+  "repository": "https://github.com/3urobeat/platformio-web-flasher",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev --host 0.0.0.0",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "start": "node .output/server/index.mjs",
+    "bs": "npm run build && npm run start",
+    "update": "git pull && npm i && npm run build",
+    "get-version": "grep \"\\\"version\\\":\" package.json | awk '{split($0,a,\" \"); print $2}' | sed -r 's/\"|,//g'",
+    "docker-build": "docker build -t 3urobeat/platformio-web-flasher:latest -t 3urobeat/platformio-web-flasher:$(npm run get-version | tail -n 1) .",
+    "docker-start": "docker run -p 3000:3000 -v ~/platformio-web-flasher-data:/usr/src/platformio-web-flasher/data 3urobeat/platformio-web-flasher:latest",
+    "docker-bs": "npm run docker-build && npm run docker-start",
+    "docker-push": "docker image push 3urobeat/platformio-web-flasher:latest && docker image push 3urobeat/platformio-web-flasher:$(npm run get-version | tail -n 1)"
+  },
+  "keywords": [
+    "arduino",
+    "platformio",
+    "flasher"
+  ],
+  "bugs": {
+    "url": "https://github.com/3urobeat/platformio-web-flasher/issues"
+  },
+  "dependencies": {
+    "@nuxtjs/device": "^3.1.1",
+    "@nuxtjs/tailwindcss": "^6.12.0",
+    "@phosphor-icons/vue": "^2.2.1",
+    "nuxt": "^3.11.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.2.0",
+    "@nuxt/devtools": "latest",
+    "@types/ini": "^4.1.0",
+    "@types/node": "^20.12.8",
+    "@typescript-eslint/parser": "^7.8.0",
+    "@vueuse/core": "^10.9.0",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
+    "eslint-plugin-jsdoc": "^48.2.3",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.8.0"
+  }
+}

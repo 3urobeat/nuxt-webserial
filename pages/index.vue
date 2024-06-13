@@ -5,7 +5,7 @@
  * Created Date: 2024-06-12 19:37:13
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-12 22:38:22
+ * Last Modified: 2024-06-13 21:39:18
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -19,9 +19,32 @@
 
 <template>
 
+    <button @click="serialConnect()">Connect</button>
+
 </template>
 
 
 <script setup lang="ts">
+
+    async function serialConnect() {
+
+        // Request port from the user's browser
+        const port = await navigator.serial.requestPort();
+
+        // Attempt to open
+        const openOptions = {
+            baudRate: 115200
+        }
+
+        await port.open(openOptions)
+            .catch((err: Error) => {
+                console.log("Failed to open port: " + err);
+            });
+
+        // Success
+        console.log("Successfully connected!");
+        console.log(port);
+
+    }
 
 </script>

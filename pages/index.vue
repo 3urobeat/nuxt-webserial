@@ -5,7 +5,7 @@
  * Created Date: 2024-06-12 19:37:13
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-14 23:11:47
+ * Last Modified: 2024-06-15 14:53:23
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -44,7 +44,7 @@
         const encoder = new TextEncoder();
 
         // Listen for new data from the server for the entire runtime
-        while (true) {
+        while (true) {                                          // TODO: Stop when websocket is closed
             const { done, value } = await serverReader.read();
             if (!value) return;
 
@@ -67,7 +67,7 @@
         if (!clientReader) throw("Cannot read from client because stream is not available");
 
         // Listen for new data from the client for the entire runtime
-        while (true) {
+        while (true) {                                          // TODO: Stop when websocket is closed
             const { done, value } = await clientReader.read();
             if (!value) return;
 
@@ -137,6 +137,18 @@
     }
 
 
+    // Disconnects the active WebSerial connection, if one is active
+    async function serialDisconnect() {
+        if (!clientPort) return;
+
+        clientPort.close();
+        clientPort.forget();
+        clientPort = null;
+
+        console.log("Successfully closed WebSerial connection.");
+    }
+
+
     // Attempt to establish stream to the serial client device
     async function serialConnect() {
 
@@ -147,9 +159,7 @@
         await clientPort.open({ baudRate: 9600 })
             .catch((err: Error) => {
                 console.log("Failed to open port: " + err);
-                clientPort?.close();
-                clientPort?.forget();
-                clientPort = null;
+                serialDisconnect();
             });
 
         if (!clientPort) return;
@@ -159,9 +169,7 @@
 
         if (!serverConnectResult) {
             console.log("Failed to establish WebSocket connection to the server. Closing serial connection to client...");
-            clientPort.close();
-            clientPort.forget();
-            clientPort = null;
+            serialDisconnect();
             return;
         }
 

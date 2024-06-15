@@ -5,7 +5,7 @@
  * Created Date: 2024-06-12 19:37:13
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-12 22:38:34
+ * Last Modified: 2024-06-13 21:25:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -19,14 +19,12 @@
 
 <template>
     <!-- Title bar -->
-    <PhList class="fixed z-30 cursor-pointer left-3 top-2 dark:text-text-dark lg:hidden block transition-opacity" size="25px" @click="showNavbar = !showNavbar"></PhList>
-
     <header
         id="titlebar"
-        class="fixed z-20 top-0 left-0 w-screen h-fit mb-5 pb-1.5 bg-bg-light dark:text-text-dark border-y-2 border-y-border-primary-light dark:border-y-border-primary-dark border-t-0 transition-all duration-500"
+        class="fixed z-20 top-0 left-0 w-screen h-fit mb-5 pb-1.5 bg-bg-light dark:text-text-dark border-y-2 border-y-border-primary-light dark:border-y-border-primary-dark border-t-0"
     >
         <!-- Title -->
-        <div class="pt-2 w-full text-center select-none flex items-center justify-center font-semibold transition-opacity duration-500">
+        <div class="pt-2 w-full text-center select-none flex items-center justify-center font-semibold">
             PlatformIO Web Flasher
         </div>
 
@@ -34,7 +32,7 @@
 
 
     <!-- The main content itself -->
-    <main class="fixed z-10 w-screen h-screen bg-bg-light dark:bg-bg-dark dark:text-text-dark transition-all duration-500 lg:pl-52 overflow-auto">
+    <main class="fixed top-10 w-screen h-screen bg-bg-light dark:bg-bg-dark dark:text-text-dark overflow-auto">
         <NuxtPage></NuxtPage> <!-- Links to index.vue -->
     </main>
 

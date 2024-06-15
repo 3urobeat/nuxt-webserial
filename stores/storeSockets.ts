@@ -4,7 +4,7 @@
  * Created Date: 2024-06-14 09:21:01
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-14 20:12:16
+ * Last Modified: 2024-06-15 15:00:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -43,5 +43,7 @@ export function addStoredWebSocket(id: string, wss: WebSocketServer) {
     if (getStoredWebSocket(id)) throw("WebSocketServer with that ID already exists");
 
     socketsCollection.push({ id: id, wss: wss });
+
+    console.log(`[DEBUG] addStoredWebSocket(): New WebSocketServer registered, there are now ${socketsCollection.length} socket servers stored`);
 
 }

@@ -4,7 +4,7 @@
  * Created Date: 2024-06-12 19:37:16
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-12 22:37:27
+ * Last Modified: 2024-06-16 15:56:01
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -29,7 +29,7 @@ import ts from "typescript-eslint";
 
 export default [
     {
-        ignores: ["data/*", ".output/*", ".nuxt/*"], // These are project specific!
+        ignores: [".output/*", ".nuxt/*"], // These are project specific!
     },
     js.configs.recommended,    // Import recommended eslint rules
     ...ts.configs.recommended, // Import recommended typescript-eslint rules

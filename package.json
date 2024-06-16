@@ -34,6 +34,7 @@
     "@nuxtjs/tailwindcss": "^6.12.0",
     "@phosphor-icons/vue": "^2.2.1",
     "nuxt": "^3.12.1",
+    "serialport": "^12.0.0",
     "ws": "^8.17.0"
   },
   "devDependencies": {

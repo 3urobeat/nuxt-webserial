@@ -5,7 +5,7 @@
  * Created Date: 2024-06-12 19:37:13
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-15 14:53:23
+ * Last Modified: 2024-06-15 22:10:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -83,11 +83,13 @@
         return new Promise((resolve) => {
 
             try {
-                ws = new WebSocket(`ws://${location.host}/serialWebsocket`);
+                ws = new WebSocket(`ws://${location.host}/`);
+
+                console.log("Sent request to server to register a WebSocketServer for us...");
 
                 // Create streams for reading and writing when the websocket becomes available
                 ws.onopen = () => {
-                    console.log('WebSocket connection established');
+                    console.log("WebSocket connection established!");
 
                     const readableStream = new ReadableStream({
                         start: (controller) => {

@@ -26,3 +26,5 @@ logs
 *.xcf
 
 platformio-web-flasher.code-workspace
+data/mounts/*
+!data/mounts/serialService.mjs

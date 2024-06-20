@@ -4,7 +4,7 @@
  * Created Date: 2024-06-14 11:55:12
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-20 10:43:33
+ * Last Modified: 2024-06-20 11:48:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -16,8 +16,8 @@
 
 
 import { WebSocketServer } from "ws";
-import { SerialDevice } from "~/composables/handleLinuxSerial";
-import { addStoredWebSocket, getStoredWebSocket } from "~/stores/storeSockets";
+import { SerialDevice } from "~/server/serialDevice";
+import { addStoredWebSocket, getStoredWebSocket } from "~/server/socketStorage";
 
 
 let tempId = "123456"; // TODO: Temp id for testing

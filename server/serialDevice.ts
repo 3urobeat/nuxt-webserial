@@ -1,10 +1,10 @@
 /*
- * File: handleLinuxSerial.ts
+ * File: serialDevice.ts
  * Project: nuxt-webserial
- * Created Date: 2024-06-15 12:26:55
+ * Created Date: 2024-06-20 11:39:11
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-20 10:43:33
+ * Last Modified: 2024-06-20 11:41:35
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -22,7 +22,6 @@ import { ChildProcess, spawn } from "child_process";
 export class SerialDevice {
     serialProcess: ChildProcess;
 
-
     /**
      * Creates a new serial device
      * @param id UUID of the device to create
@@ -32,10 +31,9 @@ export class SerialDevice {
         console.log(`[DEBUG] Spawning new serialService for id '${id}'...`);
 
         // Spawn new service
-        this.serialProcess = spawn('node', ['./data/mounts/serialService.mjs', id], {
+        this.serialProcess = spawn('node', ['./server/mounts/serialService.mjs', id], {
             stdio: ['pipe', 'pipe', 'pipe', 'ipc']
         });
-
 
         // Attach event handlers for listening and handling errors
         this.serialProcess.on("message", (message: { type: string, data: string }) => {
@@ -48,7 +46,6 @@ export class SerialDevice {
             console.log(`[DEBUG] SerialProcess-${id} Error: ${JSON.stringify(err)}`);
         });
     }
-
 
     /**
      * Writes data to the device

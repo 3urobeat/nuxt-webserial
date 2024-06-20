@@ -1,10 +1,10 @@
 /*
- * File: storeSockets.ts
+ * File: socketStorage.ts
  * Project: nuxt-webserial
  * Created Date: 2024-06-14 09:21:01
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-20 11:06:19
+ * Last Modified: 2024-06-20 11:43:29
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>

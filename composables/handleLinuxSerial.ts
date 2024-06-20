@@ -1,21 +1,21 @@
 /*
  * File: handleLinuxSerial.ts
- * Project: platformio-web-flasher
+ * Project: nuxt-webserial
  * Created Date: 2024-06-15 12:26:55
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-16 16:19:08
+ * Last Modified: 2024-06-20 10:43:33
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+ * Licensed under the MIT license: https://opensource.org/licenses/MIT
+ * Permission is granted to use, copy, modify, and redistribute the work.
+ * Full license information available in the project LICENSE file.
  */
 
 
-import { ChildProcess, spawn } from 'child_process';
+import { ChildProcess, spawn } from "child_process";
 
 
 // Handles spawning a new serialService process and interfaces with it
@@ -44,7 +44,7 @@ export class SerialDevice {
             if (message.type == "data") write(message.data);
         });
 
-        this.serialProcess.on("error", (err) => {
+        this.serialProcess.on("error", (err: any) => {
             console.log(`[DEBUG] SerialProcess-${id} Error: ${JSON.stringify(err)}`);
         });
     }

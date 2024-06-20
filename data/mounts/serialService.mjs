@@ -1,22 +1,23 @@
 /*
  * File: serialService.mjs
- * Project: platformio-web-flasher
+ * Project: nuxt-webserial
  * Created Date: 2024-06-16 14:18:34
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-16 16:02:02
+ * Last Modified: 2024-06-20 11:01:08
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+ * Licensed under the MIT license: https://opensource.org/licenses/MIT
+ * Permission is granted to use, copy, modify, and redistribute the work.
+ * Full license information available in the project LICENSE file.
  */
 
 
 // This file gets spawned by a parent process and emulates a serial device.
 // The service reads data from it, passes it back to the parent process and allows writing to it.
+// This cannot directly be done from Nuxt because it causes a V8 engine missing lock exception
 
 
 import { exec } from "child_process";
@@ -26,13 +27,13 @@ import { SerialPort } from "serialport";
 const id        = process.argv[2];          // The argv[2] parameter contains the device ID which this service should handle
 const logPrefix = `[SerialService-${id}] `;
 
-process.title = `SerialService-${id}`;
+process.title = `SerialService-${id}`;      // Make this process identifiable in process monitors
 
 
-// Create virtual serial ports VIRT0 & VIRT1
+// Create raw virtual serial ports VIRT0 & VIRT1
 console.log(logPrefix + "Opening virtual serial ports...");
 
-exec(`socat PTY,link=./data/mounts/${id}/ttyVIRT0,mode=666 PTY,link=./data/mounts/${id}/ttyVIRT1,mode=666`, (err) => {
+exec(`socat pty,rawer,echo=0,nonblock,ignoreof,mode=660,link=./data/mounts/${id}/ttyVIRT0 pty,rawer,echo=0,nonblock,ignoreof,mode=660,link=./data/mounts/${id}/ttyVIRT1`, (err) => {
     if (err) {
         console.log(logPrefix + "Failed to create virtual serial port using 'socat'!\n" + err);
         process.exit(1);

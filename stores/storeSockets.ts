@@ -1,17 +1,17 @@
 /*
  * File: storeSockets.ts
- * Project: platformio-web-flasher
+ * Project: nuxt-webserial
  * Created Date: 2024-06-14 09:21:01
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-15 15:00:22
+ * Last Modified: 2024-06-20 11:06:19
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+ * Licensed under the MIT license: https://opensource.org/licenses/MIT
+ * Permission is granted to use, copy, modify, and redistribute the work.
+ * Full license information available in the project LICENSE file.
  */
 
 
@@ -37,6 +37,11 @@ export function getStoredWebSocket(id: string) { // TODO: Validate id with cooki
 }
 
 
+/**
+ * Adds a websocket server to the sockets collection
+ * @param id ID of the socket
+ * @param wss WebSocketServer instance to store
+ */
 export function addStoredWebSocket(id: string, wss: WebSocketServer) {
 
     // Check if already exists

@@ -25,6 +25,4 @@ logs
 # Local gimp projects for logo and preview
 *.xcf
 
-platformio-web-flasher.code-workspace
-data/mounts/*
-!data/mounts/serialService.mjs
+nuxt-webserial.code-workspace

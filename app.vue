@@ -1,57 +1,29 @@
 <!--
 /*
  * File: app.vue
- * Project: platformio-web-flasher
+ * Project: nuxt-webserial
  * Created Date: 2024-06-12 19:37:13
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-13 21:25:21
+ * Last Modified: 2024-06-20 10:43:56
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+ * Licensed under the MIT license: https://opensource.org/licenses/MIT
+ * Permission is granted to use, copy, modify, and redistribute the work.
+ * Full license information available in the project LICENSE file.
  */
 -->
 
 
 <template>
-    <!-- Title bar -->
-    <header
-        id="titlebar"
-        class="fixed z-20 top-0 left-0 w-screen h-fit mb-5 pb-1.5 bg-bg-light dark:text-text-dark border-y-2 border-y-border-primary-light dark:border-y-border-primary-dark border-t-0"
-    >
-        <!-- Title -->
-        <div class="pt-2 w-full text-center select-none flex items-center justify-center font-semibold">
-            PlatformIO Web Flasher
-        </div>
 
-    </header>
-
-
-    <!-- The main content itself -->
-    <main class="fixed top-10 w-screen h-screen bg-bg-light dark:bg-bg-dark dark:text-text-dark overflow-auto">
-        <NuxtPage></NuxtPage> <!-- Links to index.vue -->
-    </main>
+    <NuxtPage></NuxtPage> <!-- Links to index.vue -->
 
 </template>
 
 
 <script setup lang="ts">
-    import packagejson from "./package.json";
-
-    // Specify page information
-    useSeoMeta({
-        title: "PlatformIO Web Flasher",
-        ogTitle: "PlatformIO Web Flasher",
-        description: "",
-        ogDescription: ""
-    });
-
-    /* useHead({
-        link: [{ rel: "icon", type: "image/png", href: "favicon.png" }]
-    }); */
 
 </script>

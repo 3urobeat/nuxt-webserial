@@ -5,7 +5,7 @@
  * Created Date: 2024-06-12 19:37:13
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-20 10:43:33
+ * Last Modified: 2024-06-21 13:09:50
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -19,7 +19,9 @@
 
 <template>
 
-    <button @click="serialConnect()">Connect</button>
+    <p v-if="isConnected">Connected!</p>
+    <button v-if="!isConnected" @click="serialConnect()">Connect</button>
+    <button v-if="isConnected" @click="serialDisconnect()">Disconnect</button>
 
 </template>
 
@@ -34,6 +36,8 @@
     let ws          : WebSocket                   | null = null;
     let serverReader: ReadableStreamDefaultReader | null = null;
     let serverWriter: WritableStreamDefaultWriter | null = null;
+
+    const isConnected = ref(false);
 
 
     // Reads data from the server and writes it to the client
@@ -146,6 +150,7 @@
         clientPort.close();
         clientPort.forget();
         clientPort = null;
+        isConnected.value = false;
 
         console.log("Successfully closed WebSerial connection.");
     }
@@ -184,6 +189,7 @@
         handleDataServerToClient();
 
         // Success
+        isConnected.value = true;
         console.log("Successfully connected!");
         console.log(clientPort);
 

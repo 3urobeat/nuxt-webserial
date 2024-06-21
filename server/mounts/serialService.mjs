@@ -4,7 +4,7 @@
  * Created Date: 2024-06-16 14:18:34
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-20 11:01:08
+ * Last Modified: 2024-06-21 11:09:35
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -22,6 +22,7 @@
 
 import { exec } from "child_process";
 import { SerialPort } from "serialport";
+import fs from "fs";
 
 
 const id        = process.argv[2];          // The argv[2] parameter contains the device ID which this service should handle
@@ -30,10 +31,17 @@ const logPrefix = `[SerialService-${id}] `;
 process.title = `SerialService-${id}`;      // Make this process identifiable in process monitors
 
 
+// Create folder for ID if it doesn't exist yet
+if (!fs.existsSync(`./server/mounts/${id}`)) {
+    console.log(logPrefix + "Creating new mount point for ID " + id);
+    fs.mkdirSync(`./server/mounts/${id}`);
+}
+
+
 // Create raw virtual serial ports VIRT0 & VIRT1
 console.log(logPrefix + "Opening virtual serial ports...");
 
-exec(`socat pty,rawer,echo=0,nonblock,ignoreof,mode=660,link=./data/mounts/${id}/ttyVIRT0 pty,rawer,echo=0,nonblock,ignoreof,mode=660,link=./data/mounts/${id}/ttyVIRT1`, (err) => {
+exec(`socat pty,rawer,echo=0,nonblock,ignoreof,mode=660,link=./server/mounts/${id}/ttyVIRT0 pty,rawer,echo=0,nonblock,ignoreof,mode=660,link=./server/mounts/${id}/ttyVIRT1`, (err) => {
     if (err) {
         console.log(logPrefix + "Failed to create virtual serial port using 'socat'!\n" + err);
         process.exit(1);
@@ -47,7 +55,7 @@ setTimeout(() => {
 
     // Open the serial port
     const port = new SerialPort({
-        path: `./data/mounts/${id}/ttyVIRT1`,
+        path: `./server/mounts/${id}/ttyVIRT1`,
         baudRate: 9600,
         autoOpen: false
     });
@@ -98,6 +106,11 @@ setTimeout(() => {
 
     // Close port on exit
     process.on("SIGINT", () => {
+        if (fs.existsSync(`./server/mounts/${id}`)) {
+            console.log(logPrefix + "Removing mount point for ID " + id);
+            fs.rmdirSync(`./server/mounts/${id}`);
+        }
+
         port.close((err) => {
             if (err) {
                 process.send({ type: "error", data: err.message });

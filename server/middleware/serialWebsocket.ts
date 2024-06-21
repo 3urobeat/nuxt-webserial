@@ -4,7 +4,7 @@
  * Created Date: 2024-06-14 11:55:12
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-20 11:48:22
+ * Last Modified: 2024-06-21 16:39:38
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -17,10 +17,6 @@
 
 import { WebSocketServer } from "ws";
 import { SerialDevice } from "~/server/serialDevice";
-import { addStoredWebSocket, getStoredWebSocket } from "~/server/socketStorage";
-
-
-let tempId = "123456"; // TODO: Temp id for testing
 
 
 export default defineEventHandler((event) => {
@@ -35,21 +31,7 @@ export default defineEventHandler((event) => {
 
 
     // Attempt to get existing WebSocket from storage
-    let wss = getStoredWebSocket(tempId)?.wss;
-
-    // Create new websocket if none exists yet
-    if (!wss) {
-        console.log(`[DEBUG] No WebSocketServer stored for user '${ip}', creating a new one...`);
-
-        // Create a new WebSocketServer and add it to the storage
-        wss = new WebSocketServer({ server: event.node.res.socket?.server });
-        addStoredWebSocket(tempId, wss);
-
-    } else {
-
-        console.log(`[DEBUG] Existing WebSocketServer found for user '${ip}', reusing it...`);
-        return; // Do not attach another event listener
-    }
+    let wss = new WebSocketServer({ server: event.node.res.socket?.server });
 
 
     // Wait for connection
@@ -63,6 +45,8 @@ export default defineEventHandler((event) => {
         }
 
         // Create new virtual SerialDevice for other processes to interface with
+        const tempId = Math.random().toString(36).slice(-10); // Generate some random key to differentiate this request from others
+
         const device = new SerialDevice(tempId, socketSend);
 
         // Listen for incoming messages and forward them to the serial device

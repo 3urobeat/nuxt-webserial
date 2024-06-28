@@ -5,7 +5,7 @@
  * Created Date: 2024-06-12 19:37:13
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-21 13:09:50
+ * Last Modified: 2024-06-28 19:49:51
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -21,7 +21,7 @@
 
     <p v-if="isConnected">Connected!</p>
     <button v-if="!isConnected" @click="serialConnect()">Connect</button>
-    <button v-if="isConnected" @click="serialDisconnect()">Disconnect</button>
+    <button v-if="isConnected" @click="disconnect()">Disconnect</button>
 
 </template>
 
@@ -48,7 +48,7 @@
         const encoder = new TextEncoder();
 
         // Listen for new data from the server for the entire runtime
-        while (true) {                                          // TODO: Stop when websocket is closed
+        while (ws && clientPort) {                                          // TODO: Stop when websocket is closed
             const { done, value } = await serverReader.read();
             if (!value) return;
 
@@ -71,7 +71,7 @@
         if (!clientReader) throw("Cannot read from client because stream is not available");
 
         // Listen for new data from the client for the entire runtime
-        while (true) {                                          // TODO: Stop when websocket is closed
+        while (ws && clientPort) {                                          // TODO: Stop when websocket is closed
             const { done, value } = await clientReader.read();
             if (!value) return;
 
@@ -143,16 +143,24 @@
     }
 
 
-    // Disconnects the active WebSerial connection, if one is active
-    async function serialDisconnect() {
-        if (!clientPort) return;
+    // Disconnects WebSerial and WebSocket connection
+    async function disconnect() {
+        if (ws) {
+            console.log("Closing websocket...");
 
-        clientPort.close();
-        clientPort.forget();
-        clientPort = null;
+            ws.close();
+            ws = null;
+        }
+
+        if (clientPort) {
+            console.log("Closing clientPort...");
+
+            clientPort.close();
+            clientPort.forget();
+            clientPort = null;
+        }
+
         isConnected.value = false;
-
-        console.log("Successfully closed WebSerial connection.");
     }
 
 
@@ -166,7 +174,7 @@
         await clientPort.open({ baudRate: 9600 })
             .catch((err: Error) => {
                 console.log("Failed to open port: " + err);
-                serialDisconnect();
+                disconnect();
             });
 
         if (!clientPort) return;
@@ -176,7 +184,7 @@
 
         if (!serverConnectResult) {
             console.log("Failed to establish WebSocket connection to the server. Closing serial connection to client...");
-            serialDisconnect();
+            disconnect();
             return;
         }
 

@@ -5,7 +5,7 @@
  * Created Date: 2024-06-12 19:37:13
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-29 21:25:40
+ * Last Modified: 2024-06-29 21:45:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -47,7 +47,7 @@
         ws!.onmessage = (event) => {
             console.log(`[DEBUG] WebSocket onmessage: Writing '${event.data}' to client...`)
 
-            const encoded: Uint8Array = encoder.encode(String(event.data));
+            const encoded: Uint8Array = encoder.encode(String(event.data)); // We need to encode our string to a Uint8Array first
 
             clientWriter?.write(encoded);
         }
@@ -105,10 +105,13 @@
         if (clientPort) {
             console.log("Closing clientPort...");
 
-            clientReader?.releaseLock();
+            clientReader?.cancel(); // Allows us to call releaseLock for reader below
+
+            clientReader?.releaseLock(); // Release lock to be able to call close() below
             clientWriter?.releaseLock();
-            clientPort.close();
-            clientPort.forget();
+
+            await clientPort.close();
+            await clientPort.forget(); // Tell browser we are not using the device anymore
         }
 
         clientPort = null;

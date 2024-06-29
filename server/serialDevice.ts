@@ -4,7 +4,7 @@
  * Created Date: 2024-06-20 11:39:11
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-20 11:41:35
+ * Last Modified: 2024-06-30 00:00:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -39,7 +39,7 @@ export class SerialDevice {
         this.serialProcess.on("message", (message: { type: string, data: string }) => {
             console.log(`[DEBUG] SerialProcess-${id} Message: ${JSON.stringify(message)}`);
 
-            if (message.type == "data") write(message.data);
+            if (message.type == "data") write(message.data); // Only forward messages of type data, other types should only get logged for informational purposes
         });
 
         this.serialProcess.on("error", (err: any) => {

@@ -5,7 +5,7 @@
  * Created Date: 2024-06-12 19:37:13
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-29 21:45:05
+ * Last Modified: 2024-06-29 21:53:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -54,7 +54,7 @@
 
 
         // Listen for new data from the client and send to the server
-        while (ws && clientReader) {                                          // TODO: Stop when websocket is closed
+        while (ws && clientReader) {
             const { done, value } = await clientReader.read();
             if (!value) return;
 

@@ -22,7 +22,4 @@ logs
 .env.*
 !.env.example
 
-# Local gimp projects for logo and preview
-*.xcf
-
 nuxt-webserial.code-workspace

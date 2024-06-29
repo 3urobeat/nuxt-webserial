@@ -4,7 +4,7 @@
  * Created Date: 2024-06-16 14:18:34
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-21 11:09:35
+ * Last Modified: 2024-06-29 19:30:09
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -41,7 +41,7 @@ if (!fs.existsSync(`./server/mounts/${id}`)) {
 // Create raw virtual serial ports VIRT0 & VIRT1
 console.log(logPrefix + "Opening virtual serial ports...");
 
-exec(`socat pty,rawer,echo=0,nonblock,ignoreof,mode=660,link=./server/mounts/${id}/ttyVIRT0 pty,rawer,echo=0,nonblock,ignoreof,mode=660,link=./server/mounts/${id}/ttyVIRT1`, (err) => {
+const socat = exec(`socat pty,rawer,echo=0,nonblock,ignoreof,mode=660,link=./server/mounts/${id}/ttyVIRT0 pty,rawer,echo=0,nonblock,ignoreof,mode=660,link=./server/mounts/${id}/ttyVIRT1`, (err) => {
     if (err) {
         console.log(logPrefix + "Failed to create virtual serial port using 'socat'!\n" + err);
         process.exit(1);
@@ -104,8 +104,10 @@ setTimeout(() => {
     });
 
 
-    // Close port on exit
-    process.on("SIGINT", () => {
+    // Cleanup on exit
+    function exit() {
+        socat.kill();
+
         if (fs.existsSync(`./server/mounts/${id}`)) {
             console.log(logPrefix + "Removing mount point for ID " + id);
             fs.rmdirSync(`./server/mounts/${id}`);
@@ -117,8 +119,11 @@ setTimeout(() => {
             } else {
                 process.send({ type: "close", data: "Port closed successfully" });
             }
-
-            process.exit();
         });
-    });
+
+        process.exit();
+    }
+
+    process.on("SIGTERM", () => exit());
+    process.on("SIGINT", () => exit());
 }, 2500);

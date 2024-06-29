@@ -4,7 +4,7 @@
  * Created Date: 2024-06-14 11:55:12
  * Author: 3urobeat
  *
- * Last Modified: 2024-06-28 18:57:10
+ * Last Modified: 2024-06-29 19:28:56
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 3urobeat <https://github.com/3urobeat>
@@ -44,8 +44,18 @@ export default defineEventHandler((event) => {
 
 
     // Wait for connection
-    wss.on("connection", function (socket) {
+    wss.on("connection", (socket) => {
         console.log(`[DEBUG] WebSocketServer Connection with user '${ip}' established!`);
+
+        // Cleanup this connection
+        socket.on("close", () => {
+            console.log("[DEBUG] Socket closed, closing SerialDevice...");
+
+            device!.serialProcess.kill();
+            device = null;
+            socket.close();
+        })
+
 
         // Function for sending data back from SerialDevice to websocket. `socket.send` cannot be passed directly to SerialDevice, presumably due to context issues(?)
         const socketSend = (data: string) => {
@@ -65,7 +75,7 @@ export default defineEventHandler((event) => {
     });
 
     // Cleanup on disconnect
-    wss.on("close", function () {
+    wss.on("close", () => {
         if (!device) return;
 
         console.log("[DEBUG] WebSocket closed, cleaning up...");

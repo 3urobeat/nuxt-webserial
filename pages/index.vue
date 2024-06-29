@@ -153,6 +153,7 @@
     }
 
 
-    // TODO: Close ws on unmount
+    // Disconnect when user leaves page
+    onBeforeUnmount(() => disconnect());
 
 </script>
